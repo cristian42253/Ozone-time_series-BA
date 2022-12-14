@@ -12,3 +12,7 @@ Air quality monitoring stations are where ozone is measured; for this case, a ca
 We aim to detect change points with functional parts using a Bayesian approach in time series with missing data. For this reason, we create function dictionaries according to each time series. Each dictionary has fewer Haar functions. 
 
 ## Getting started
+We begin treatment as follows:
+
+1. To run the models we must start with the creation of the dictionaries, for which we use the file \texttt{bases_gen.r}
+2. 
