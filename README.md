@@ -14,5 +14,5 @@ We aim to detect change points with functional parts using a Bayesian approach i
 ## Getting started
 We begin treatment as follows:
 
-1. To run the models we must start with the creation of the dictionaries, for which we use the file \texttt{bases_gen.r}
-2. 
+1. To run the models we must start with the creation of the dictionaries, for which we use
+   > bases_gen.R
