@@ -9,4 +9,6 @@ Air quality monitoring stations are where ozone is measured; for this case, a ca
 
 ## Goal 
 
-We aim to detect change points with functional parts using a Bayesian approach in time series with missing data.
+We aim to detect change points with functional parts using a Bayesian approach in time series with missing data. For this reason, we create function dictionaries according to each time series. Each dictionary has fewer Haar functions. 
+
+## Getting started
