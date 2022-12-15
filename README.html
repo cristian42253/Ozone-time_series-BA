@@ -374,7 +374,58 @@ case, a calendar year between 2019 and 2021 was taken.</p>
 <div id="goal" class="section level2">
 <h2>Goal</h2>
 <p>We aim to detect change points with functional parts using a Bayesian
-approach in time series with missing data.</p>
+approach in time series with missing data. For this reason, we create
+function dictionaries according to each time series. Each dictionary has
+fewer Haar functions.</p>
+</div>
+<div id="getting-started" class="section level2">
+<h2>Getting started</h2>
+<p>To replicate the results and run the files it is necessary to install
+the dependencies found in the <code>requirements.txt</code> file</p>
+<p>We begin treatment as follows:</p>
+<ol style="list-style-type: decimal">
+<li><p>To run the models we must start with the creation of the
+dictionaries, for which we use the file
+<code>bases_gen.r</code></p></li>
+<li><p>Change the addresses of the file containing the time series and
+function dictionaries, in <code>processing.py</code></p></li>
+<li><p>The <code>config.py</code> file contains the parameters on which
+the algorithm is set to perform the runs. You can consider increasing or
+decreasing them depending on the problem to study; this will imply
+program execution time.</p></li>
+</ol>
+<pre class="python"><code>############## initial parameters
+
+itertot = 160000
+burnin = 40000
+lec1 =  50
+lec2 =  50
+nbseginit = 10
+nbfuncinit = 12
+nbtochangegamma = 1
+nbtochanger = 1
+
+plt_style  = &quot;classic&quot; #&quot;ggplot&quot; #&quot;seaborn&quot;
+
+DEBUG = True</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li><p>When obtaining the estimates, the program creates a file with
+extension <code>name.pkl</code> ; it contains the estimates and the runs
+used to obtain the reconstruction and the locations of the change
+points.</p></li>
+<li><p>To plot and reconstruct the estimates to the complete data
+series, including the missing data, we use the file
+<code>drawler_pkl.py</code>. In this program, we can change the
+thresholds for the choice of change points and functions that appear
+significant according to the posterior probabilities. An example is the
+following:</p></li>
+</ol>
+<pre class="python"><code>threshold_bp_list = [0.45, 0.4, 0.5, 0.45, 0.55]
+
+threshold_fnc_list = [0.3, 0.2, 0.4, 0.25, 0.4]</code></pre>
+<p>For each series, a threshold must be established for the change
+points and the choice of functions; in our case, we consider five Ozone
+series.</p>
 </div>
 </div>
 
