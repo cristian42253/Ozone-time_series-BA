@@ -1,7 +1,7 @@
 # Bayes_BPD_NaN [Bayesian approach for detecting change points in time series with missing data]
 
 
-  In this repository, you will find the implementation in Python and R for detecting change points in five Ozone time series from station in Colombia  with functional parts and the presence of missing data. The files reproduce the results obtained in the manuscript entitled "Ozone time series segmentation in presence of missing data using Bayesian approach"
+  In this repository, you will find the implementation in Python and R for detecting change points in five Ozone time series from stations in Colombia. These series are modeled by a segmentation model with functional parts and perform the bayesian approach but are takin about missing data. The files reproduce the results in the manuscript entitled "Ozone time series segmentation in the presence of missing data using Bayesian approach."
 
 ## Data
 
