@@ -12,7 +12,7 @@ Air quality monitoring stations are where ozone is measured; for this case, a ca
 We aim to detect change points with functional parts using a Bayesian approach in time series with missing data. For this reason, we create function dictionaries according to each time series. Each dictionary has fewer Haar functions. 
 
 ## Getting started
-<<<<<<< HEAD
+
 
 To replicate the results and run the files it is necessary to install the dependencies found in the ```requirements.txt``` file
 
@@ -23,6 +23,7 @@ We begin treatment as follows:
 2. Change the addresses of the file containing the time series and function dictionaries, in ```processing.py```
 
 3. The ```config.py``` file contains the parameters on which the algorithm is set to perform the runs. You can consider increasing or decreasing them depending on the problem to study; this will imply program execution time.
+
 ```python
 ############## initial parameters
 
