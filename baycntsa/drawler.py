@@ -1,10 +1,20 @@
 # -*- coding: utf-8 -*-
 
+import sys
+params = sys.argv
+
+if len(params) < 4:
+    print("At least two argument must be supplied (input file), (bases), (output folder) \n")
+    sys.exit(100)
+
+INPUT_FILE = params[1]
+PKL_FILE = params[2]
+OUTPUT_FILE = params[3]
+
 # Load libraries
-# %%
 import numpy as np
 from functions import * 
-from config import * 
+from settings import * 
 
 import matplotlib
 matplotlib.use('Agg')
@@ -14,21 +24,18 @@ import pickle
 
 from sklearn.cluster import KMeans
 
-# %%
-
 import os
 # cwd = os.getcwd()
 # print(cwd)
 results_pkl=[]
 all_station = ["O3_BA" ,"O3_Comp","O3_ERA","O3_Flora","O3_Pance"]
 for a_station in all_station:
-    file = open(f"./objects/result_Pi0_{a_station}.pkl",'rb')
+    file = open(PKL_FILE,'rb')
     results_pkl.append(pickle.load(file))
 
-# %%
 ## carga de la serie de datos
 if DEBUG: print("loading data")
-data_fnct_dp = pd.read_csv('./inputs/processed_o3_data.csv', decimal='.', delimiter=',')
+data_fnct_dp = pd.read_csv(INPUT_FILE, decimal='.', delimiter=',')
 ## cambio de formato a las fechas
 data_fnct_dp['date'] = pd.to_datetime(data_fnct_dp['date'], format='%Y-%m-%d')
 
@@ -56,9 +63,8 @@ for index, a_serie in enumerate(data_serie_list):
     # data_serie_list[index] = a_serie.reshape(len(a_serie), 1) ## save data with NAs
 
 
-# %%
-## Load config 
-from config import *
+## Load basic settings 
+from settings import *
 
 # umbrales de corte para cada serie
 threshold_bp_list = [0.45, 0.4, 0.5, 0.45, 0.55]
@@ -163,7 +169,6 @@ for index, result_ in enumerate(results_pkl):
     )
 
 
-#%%
 # Change Plots and identifiying change point after missing values posterior probabilities.
 # Clustering
 for index, result_ in enumerate(results_pkl):
@@ -197,7 +202,6 @@ for index, result_ in enumerate(results_pkl):
 
     # Extrac values for step by step
     ((resMH["sumgamma"][(resMH["sumgamma"]/(itertot-burnin))>0.6] )/(itertot-burnin))[breakpoints_bp.index(361)]
-#%%
     #
     
     fig = figure(figsize=(20, 20), dpi=400)

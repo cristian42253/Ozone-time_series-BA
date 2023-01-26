@@ -1,8 +1,21 @@
-# %%
-from cmath import nan
+####################################################################################
+# main script
+####################################################################################
+
+import sys
+params = sys.argv
+
+if len(params) < 4:
+    print("At least two argument must be supplied (input file), (bases), (output folder) \n")
+    sys.exit(100)
+
+INPUT_FILE = params[1]
+BASE_FILE = params[2]
+OUTPUT_FILE = params[3]
+
 import numpy as np
 from functions import * 
-from config import * 
+from settings import * 
 
 import pickle
 
@@ -14,7 +27,7 @@ from matplotlib.pyplot import figure, title
 
 ## carga de la serie de datos
 if DEBUG: print("\u001b[36m\n** Loading data \u001b[0m")
-data_fnct_dp = pd.read_csv('./inputs/processed_o3_data.csv', decimal='.', delimiter=',')
+data_fnct_dp = pd.read_csv(INPUT_FILE, decimal='.', delimiter=',')
 ## cambio de formato a las fechas
 data_fnct_dp['date'] = pd.to_datetime(data_fnct_dp['date'], format='%Y-%m-%d')
 ## cambios en el dataset
@@ -35,7 +48,7 @@ for index, data in enumerate(data_serie_list):
     fig = figure(figsize=(20, 5), dpi=200)
     plt.style.use(plt_style)
     plt.plot(data_fnct_dp['date'], data, color='black', linestyle='solid', linewidth=2, label='')
-    plt.savefig("./outputs/fig_Pi0_{}".format( data_fnct_dp.columns[index] ))
+    plt.savefig(f"{OUTPUT_FILE}/fig_Pi0_{data_fnct_dp.columns[index]}")
     plt.close(fig)
 
 ### se escalan los datos con media=0 y sd=1
@@ -72,7 +85,7 @@ for index, a_serie in enumerate(data_serie_list):
     pI = pI[~np.isnan(pI)]
     #print(pI)
     pX.append(pI)
-# %%
+
 result_list = []
 for index, a_serie in enumerate(data_serie_list):
     
@@ -81,10 +94,7 @@ for index, a_serie in enumerate(data_serie_list):
     # Cambias las posiciones 0.001
     # Pi = np.concatenate([np.array([1.00]), np.repeat(0.01, n-1)], axis=0)
     Pi = pX[index]
-    data_fnct = pd.read_csv(
-        './inputs/Fmatrix{}.csv'.format(data_fnct_dp.columns[index]),
-        decimal='.', delimiter=','
-    ) 
+    data_fnct = pd.read_csv(BASE_FILE, decimal='.', delimiter=',') 
 
     data_fnct = data_fnct.iloc[:, 1:]
     Fmatrix = np.array(data_fnct)
@@ -128,5 +138,4 @@ for index, result_ in enumerate(result_list):
 
     title = data_fnct_dp.columns[index]
     
-    pickle.dump( result_, open( './objects/result_Pi02_{}.pkl'.format(title), "wb" ) )
-    
+    pickle.dump( result_, open( f'{OUTPUT_FILE}/result_Pi02_{title}.pkl', "wb" ) )

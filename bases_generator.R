@@ -1,14 +1,19 @@
+#!/usr/bin/env Rscript
+args = commandArgs(trailingOnly=TRUE)
+##############################
 # Emilie Lebarbier (Paris) and Meili Baragatti (Montpellier), 27/06/2017
+##############################
 
-library(wavethresh)
 if (!require('fda')) install.packages('fda'); library('fda')
+if (!require('wavethresh')) install.packages('wavethresh'); library('wavethresh')
 
-#
 debug = FALSE
 
-
-# Creation of a dictionary with the Haar functions
-# arguments J and R: we want the Haar functions with resolutions from 2^R to 2^J
+#' Dico
+#' Creation of a dictionary with the Haar functions
+#' arguments J and R: we want the Haar functions 
+#' with resolutions from 2^R to 2^J
+#' 
 Dico <- function(J,R){
   N=2^(J+1)
   HaarMat=GenW(N,filter.number=1,family="DaubExPhase")
@@ -19,7 +24,9 @@ Dico <- function(J,R){
   return(Dico.Funct=Fh)
 }
 
-# Evaluation of the functions in Dic.Funct at positions posx
+#' Eval.posx
+#' Evaluation of the functions in Dic.Funct at positions posx
+#' 
 Eval.posx<- function(Dic.Funct,posx,N){
   position.Funct=seq(1/N,1,1/N)  
   M=dim(Dic.Funct)[2]
@@ -30,7 +37,9 @@ Eval.posx<- function(Dic.Funct,posx,N){
   return(Fhx=FhNew)
 }
 
-# Remove from the dictionary the bases which are null at all evaluated positions
+#' Bases.NonNulles
+#' Remove from the dictionary the bases which are null at all evaluated positions
+#' 
 Bases.NonNulles<- function(F.bases){
   nbases=dim(F.bases)[2]
   PresentBases=c(1:nbases)
@@ -47,11 +56,12 @@ Bases.NonNulles<- function(F.bases){
   list(Fh.P=F.bases.Present, PresentBases=PresentBases)
 }
 
-########################################
-# Dico with cste, Fourier, Haar, x^{1/3}, x^{1/2}, 
-# x et x^2, log(x), splines ordres 3: example truffes
-########################################
+# HACK: Dico with cste, Fourier, Haar, x^{1/3}, x^{1/2}, 
+# HACK: x et x^2, log(x), splines ordres 3: example truffes
 
+#' CreationBases
+#' 
+#' 
 CreationBases<-function(t,J,R,invperiode){
   n=length(t) 
   posx=t/max(t)
@@ -112,30 +122,36 @@ CreationBases<-function(t,J,R,invperiode){
   list(F.Bases=F.Bases,FunctionsNonNulles=FunctionsNonNulles)
 }
 
+#' call to CreationBases
+#' 
+#' 
 main <- function() {
-  
-  filename <- paste0(getwd(), "/inputs/processed_o3_data.csv")
+  # test if there is at least one argument: if not, return an error
+  if (length(args) < 1) {
+    stop("At least two argument must be supplied (input CSV), (output folder) \n", call.=FALSE)
+  }
+
+  filename <- paste0(getwd(),"/", args[1])
+  print(filename)
   if(debug)  print(filename)
-  
   data <- read.csv(filename)
   vec <- c()
   cnames <- colnames(data)
+
   for (i in 1:3) {
     vec<-data[,i]
-    
     t<-c(1:length(vec))
     t<-t[-which(is.na(vec))]
-    
-    #Fmatrix_0 <- CreationBases(t,7,7,10)[[1]]
+
     Fmatrix <- CreationBases(t,7,7,10)[[1]]
-    #Fmatrix <- Fmatrix_0[-which(is.na(vec)),]
-    
-    output <- paste0(getwd(),"/inputs/Fmatrix",cnames[i],".csv")
+        
+    output <- paste0(getwd(),"/", args[2], cnames[i],".csv")
     if(debug) print("Output file:")
     if(debug) print(output)
-    write.csv(Fmatrix, output) ## 
+    write.csv(Fmatrix, output)
   }
-  print(" Success!! ")
-}
 
+  print(paste("Success! Base created in:",output))
+}
+# TODO: Call for create base matrix
 main()
